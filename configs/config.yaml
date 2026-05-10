@@ -1,0 +1,25 @@
+#Model configs
+model:
+  name: "BaseLineClassifier"
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 10
+  random_seed: 42
+
+#Data configs
+data:
+  raw_path: "data/raw/sample.csv"
+  processed_path: "data/processed/clean.csv"
+  test_size: 0.2
+  target_column: "label"
+
+#Output configs
+output:
+  model_path: "outputs/models/model.pkl"
+  metrics_path: "outputs/models/metrics.json"
+  log_path: "logs/main.log"
+
+# Experiment
+experiment:
+  name: "test_run_v1"
+  track: true
