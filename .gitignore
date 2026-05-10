@@ -4,8 +4,8 @@ __pycache__/
 .venv/
 env/
 logs/*.log
-outputs/models/*.joblib
-outputs/models/*.json
+outputs/models/*
 data/raw/*.csv
 data/processed/*.csv
 .DS_Store
+!**/.gitkeep
