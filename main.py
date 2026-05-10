@@ -11,9 +11,7 @@ logger = get_logger("__main__")
 @timer
 def main():
     try:
-        config_path = (
-            Path(__file__).resolve().parent.parent.parent / "configs" / "config.yaml"
-        )
+        config_path = Path("configs/config.yaml")
         if not config_path.exists():
             raise FileNotFoundError(f"Config file absent at {config_path}")
 
