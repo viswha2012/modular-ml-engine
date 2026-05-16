@@ -9,10 +9,16 @@ A modular, type-safe Machine Learning framework designed for reproducibility and
 - **Environment Agnostic:** Dynamic absolute path resolution for reliable execution across different local/server environments.
 - **Abstract Base Classes (ABC):** Enforcement of model interfaces to ensure structural integrity.
 
+## Release History
+
+### v1.1.0 — Hydra Config Engine
+- **Modular configs:** Enabled modular, hierarchical config swapping (`data`, `model`).
+- **Pydantic Scheme Bridge:** Flattens `DictConfig` structures with **Pydantic** validation.
+
 ## Project Structure
 ```text
 project_root/
-├── configs/          # YAML configurations
+├── configs/          # YAML configurations(hydra)
 ├── src/ml_engine/    # Core logic (Config, Data, Model, Train, Eval, Utils)
 ├── logs/             # Automated execution logs
 ├── outputs/          # Versioned model artifacts and metrics
