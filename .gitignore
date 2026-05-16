@@ -3,7 +3,7 @@ __pycache__/
 *$py.class
 .venv/
 env/
-logs/*.log
+logs/
 outputs/models/*
 data/raw/*.csv
 data/processed/*.csv

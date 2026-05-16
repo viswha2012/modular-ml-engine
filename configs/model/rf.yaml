@@ -1,0 +1,6 @@
+#Model configs
+name: "BaseLineClassifier"
+learning_rate: 0.001
+batch_size: 32
+epochs: 10
+random_seed: 42
