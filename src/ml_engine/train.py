@@ -1,3 +1,5 @@
+import asyncio
+
 from src.ml_engine.config import MainConfig
 from src.ml_engine.data_ import DataProcessor
 from src.ml_engine.evaluate import Evaluator
@@ -9,7 +11,7 @@ logger = get_logger("trainer")
 
 @timer
 @log_call(logger)
-def run_training_pipeline(config: MainConfig):
+async def run_training_pipeline(config: MainConfig):
     processor = DataProcessor(config)
     X_train, X_test, y_train, y_test = processor.run_full_pipeline()
 
@@ -17,10 +19,10 @@ def run_training_pipeline(config: MainConfig):
     model.fit(X_train, y_train)
 
     evaluator = Evaluator(config)
-    metrics = evaluator.run_evaluation(model, X_test, y_test)
-    evaluator.save_metrics(metrics)
+    metrics = await evaluator.run_evaluation(model, X_test, y_test)
 
-    model.save()
+    await asyncio.gather(evaluator.save_metrics(metrics), model.save())
+
     logger.info(
         f"Pipeline finished succesfully\nAccuracy: {metrics.get('accuracy'):.4f}"
     )

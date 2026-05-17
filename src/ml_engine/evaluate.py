@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import Any, Dict, cast
 
@@ -25,7 +26,7 @@ class Evaluator:
 
     @log_call(logger)
     @timer
-    def run_evaluation(self, model, X_test, y_test):
+    async def run_evaluation(self, model, X_test, y_test):
         y_preds = model.predict(X_test)
 
         acc = accuracy_score(y_test, y_preds)
@@ -47,14 +48,17 @@ class Evaluator:
         return metrics.model_dump()
 
     @log_call(logger)
-    def save_metrics(self, metrics: dict):
+    async def save_metrics(self, metrics: dict):
         filename = (
             f"{self.config.experiment.name}_{self.config.model.name}_metrics.json"
         )
         save_path = self.config.output.metrics_path.parent / filename
         save_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(save_path, "w") as f:
-            json.dump(metrics, f, indent=4)
+        def _write_json():
+            with open(save_path, "w") as f:
+                json.dump(metrics, f, indent=4)
+
+        await asyncio.to_thread(_write_json)
 
         logger.info(f"Metrics saved to {save_path}")

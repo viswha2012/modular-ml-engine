@@ -1,3 +1,4 @@
+import asyncio
 import sys
 
 import hydra
@@ -16,7 +17,7 @@ def main(cfg: DictConfig):
     try:
         raw_cfg = OmegaConf.to_container(cfg, resolve=True)
         config = MainConfig(**raw_cfg)  # pyright: ignore[reportCallIssue]
-        run_training_pipeline(config)
+        asyncio.run(run_training_pipeline(config))
         logger.info("Main Pipeline run successfully.")
     except Exception as e:
         logger.critical(f"System Failure: {e}")

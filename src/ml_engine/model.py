@@ -1,3 +1,4 @@
+import asyncio
 from abc import ABC, abstractmethod
 from pathlib import Path
 
@@ -55,17 +56,21 @@ class ModelWrapper(BaseMLModel):
         return preds
 
     @log_call(logger)
-    def save(self):
+    async def save(self):
         filename = f"{self.config.experiment.name}_{self.config.model.name}.joblib"
         save_path = self.config.output.model_path.parent / filename
 
         save_path.parent.mkdir(parents=True, exist_ok=True)
-        joblib.dump(self.model, save_path)
+
+        def _write_weights():
+            joblib.dump(self.model, save_path)
+
+        await asyncio.to_thread(_write_weights)
         logger.info(f"{self.config.model.name} saved to {save_path}")
 
     @log_call(logger)
     @classmethod
-    def load(cls, config: MainConfig, load_path: Path):
+    async def load(cls, config: MainConfig, load_path: Path):
         if not load_path.exists():
             logger.error(f"Model doesn't exist at {load_path}")
 
