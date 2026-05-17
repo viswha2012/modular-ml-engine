@@ -1,35 +1,28 @@
 import functools
 import logging
 import time
-from pathlib import Path
 
 
-def get_logger(name: str, log_file: str = "logs/main.log") -> logging.Logger:
-
-    log_path = Path(__file__).resolve().parent.parent.parent / log_file
-    Path(log_path).parent.mkdir(parents=True, exist_ok=True)
+def get_logger(name: str) -> logging.Logger:
 
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
 
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    console.setFormatter(
-        logging.Formatter(
-            "%(asctime)s | %(levelname)s | %(name)s | %(message)s", datefmt="%H:%M:%S"
+    if not logger.root.handlers and not logger.handlers:
+        console = logging.StreamHandler()
+        console.setLevel(logging.INFO)
+        console.setFormatter(
+            logging.Formatter(
+                "%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+                datefmt="%H:%M:%S",
+            )
         )
-    )
-
-    file_handler = logging.FileHandler(log_path)
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(
-        logging.Formatter("%(asctime)s | %(levelname)s | %(name)s | %(message)s")
-    )
-
-    logger.addHandler(console)
-    logger.addHandler(file_handler)
+        logger.addHandler(console)
 
     return logger
+
+
+logger = get_logger("ml_engine")
 
 
 def timer(func):
@@ -40,6 +33,7 @@ def timer(func):
         end = time.perf_counter()
         elapsed = end - start
         print(f"⏱  {func.__name__}() completed in {elapsed:.4f}s")
+        logger.info(f"⏱  {func.__name__}() completed in {elapsed:.4f}s")
         return result
 
     return wrapper
