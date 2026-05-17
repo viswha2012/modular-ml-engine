@@ -11,6 +11,9 @@ A modular, type-safe Machine Learning framework designed for reproducibility and
 
 ## Release History
 
+### v1.2.0 — Concurrent Execution Layer
+- **Async Engine Integration:** Introduced asynchronous execution patterns into writing operations.
+
 ### v1.1.0 — Hydra Config Engine
 - **Modular configs:** Enabled modular, hierarchical config swapping (`data`, `model`).
 - **Pydantic Scheme Bridge:** Flattens `DictConfig` structures with **Pydantic** validation.
